@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Скачать MAX</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+      user-select: none; /* Запрет выделения текста */
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 300px;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .preview-link {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 15px;
+      text-align: left;
+    }
+
+    .preview-link img {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+      user-select: none;
+    }
+
+    .preview-info strong {
+      font-size: 18px;
+      display: block;
+      margin-bottom: 5px;
+      color: #222;
+    }
+
+    .preview-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .file-info {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    #download-btn {
+      padding: 12px 25px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #download-btn:hover {
+      background-color: #45a049;
+    }
+
+    #screamer-container {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 640px;
+      height: 360px;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      box-shadow: 0 0 50px red;
+      border-top: 5px solid red;
+      background: black;
+    }
+
+    #screamer-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      pointer-events: none; /* Запретить любые клики и взаимодействие */
+    }
+
+    /* Тёмная тема */
+    body.dark-theme, html.dark-theme {
+      background: #000 !important;
+      color: #eee !important;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    body.dark-theme .card {
+      border-color: #444;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+      background: #111;
+      color: #eee;
+    }
+
+    body.dark-theme .file-info {
+      color: #ccc;
+    }
+
+    body.dark-theme .preview-info strong {
+      color: #eee;
+    }
+
+    body.dark-theme .preview-info p {
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>скачать MAX</h1>
+
+  <div class="preview-link">
+    <img src="https://files.catbox.moe/j4v8ib.jpeg" alt="Ayugram logo" />
+    <div class="preview-info">
+      <strong>MAX</strong>
+      <p>MAX официальный государственный мессенджер</p>
+    </div>
+  </div>
+
+  <div class="file-info">Размер файла: 28.1 MB</div>
+  <button id="download-btn">Скачать APK</button>
+</div>
+
+<div id="screamer-container">
+  <video id="screamer-video" preload="auto" playsinline controlsList="nodownload" oncontextmenu="return false;">
+    <source src="https://files.catbox.moe/npror8.mp4" type="video/mp4" />
+  </video>
+</div>
+
+<script>
+  // Проверка браузера Telegram
+  function isTelegramBrowser() {
+    const ua = navigator.userAgent || '';
+    return ua.includes('Telegram');
+  }
+
+  // Если браузер Telegram, перенаправляем на тот же URL с параметром, чтобы открыть в браузере по умолчанию
+  if (isTelegramBrowser()) {
+    const currentUrl = window.location.href;
+    if (!currentUrl.includes('from=telegram')) {
+      window.location.href = currentUrl + (currentUrl.includes('?') ? '&' : '?') + 'from=telegram';
+    }
+  }
+
+  const button = document.getElementById('download-btn');
+  const screamerContainer = document.getElementById('screamer-container');
+  const video = document.getElementById('screamer-video');
+  const card = document.querySelector('.card');
+  const body = document.body;
+  const html = document.documentElement;
+
+  button.addEventListener('click', () => {
+    body.classList.add('dark-theme');
+    html.classList.add('dark-theme');
+
+    card.remove();
+
+    screamerContainer.style.display = 'block';
+
+    video.muted = false;
+    video.volume = 1;
+    video.play().catch(e => {
+      console.error("Ошибка воспроизведения:", e);
+    });
+  });
+
+  // Запрет правой кнопки мыши по всему документу
+  document.addEventListener('contextmenu', event => event.preventDefault());
+
+  // Запрет выделения мышью
+  document.addEventListener('selectstart', event => event.preventDefault());
+
+  // Запрет клавиш Ctrl+C, Ctrl+X, Ctrl+U, Ctrl+A, Ctrl+S и F12 (частично DevTools)
+  document.addEventListener('keydown', function(event) {
+    if (
+      (event.ctrlKey && ['c', 'x', 'u', 'a', 's'].includes(event.key.toLowerCase())) ||
+      event.key === 'F12'
+    ) {
+      event.preventDefault();
+    }
+  });
+</script>
+
+</body>
+</html>
